@@ -16,12 +16,12 @@ public class FeatureExtraction
 	
 	public void HistogramOfOrientedGradients(Mat matrix)
 	{
-		Mat img=matrix.clone();
+		Mat img=matrix.clone(); //Clones, Mat is matrix of colors
 		
 		Size sz = new Size(64, 128);
-		Imgproc.resize(img, matrix, sz);
+		Imgproc.resize(img, matrix, sz); //resizes the matrix
 		
-		Mat tmp=img.clone();
+		Mat tmp=img.clone(); //Clone the matrix, i presume to prevent messing up the original
 		
 		double[][] Gx=new double[img.cols()-2][img.rows()-2];
 		double[][] Gy=new double[img.cols()-2][img.rows()-2];
@@ -42,7 +42,7 @@ public class FeatureExtraction
 				magnitude[x][y]=Math.sqrt(Math.pow(Gx[x][y], 2)+Math.pow(Gy[x][y], 2));
 				theta[x][y]=Math.atan(Gy[x][y]/Gx[x][y]);
 				
-				tmp.put(x, y, Gx[x][y]);
+				tmp.put(x, y, Gx[x][y]); //puts a new pixel in location x, y
 				System.out.println(Gx[x].length);
 			}
 		}
