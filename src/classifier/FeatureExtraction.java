@@ -30,7 +30,6 @@ public class FeatureExtraction
 		
 		int binNum=9; //0-180
 		int stepSize=180/binNum;
-		int count=0;
 		
 		for(int x=1; x<img.cols()-2; x++)
 		{
@@ -40,12 +39,18 @@ public class FeatureExtraction
 				Gy[x][y]=img.get(y-1, x)[0]-img.get(y+1, x)[0];
 				
 				magnitude[x][y]=Math.sqrt(Math.pow(Gx[x][y], 2)+Math.pow(Gy[x][y], 2));
-				theta[x][y]=Math.atan(Gy[x][y]/Gx[x][y]);
+				theta[x][y]=Math.toDegrees(Math.abs(Math.atan(Gy[x][y]/Gx[x][y])));
+				//theta[x][y]=Gy[x][y]/Gx[x][y];
 				
-				count++;
-				tmp.put(y, x, Gx[x][y]); //puts a new pixel in location x, y
+				System.out.println(Gy[x][y]);
+				System.out.println(Gx[x][y]);
+				System.out.println(Gy[x][y]/Gx[x][y]);
+				System.out.println(Math.toDegrees(Math.atan(theta[x][y])));
+				tmp.put(y, x, theta[x][y]); //puts a new pixel in location x, y
 			}
 		}
+		
+		
 		
 		Imgproc.resize(tmp, tmp, new Size(640, 480));
 		Image i=new Image();
