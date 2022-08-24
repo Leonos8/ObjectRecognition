@@ -92,13 +92,26 @@ public class FeatureExtraction
 		
 		double[][][] ninePointHistogram=calculate9PointHistogram(magnitude, theta, binNum, stepSize);
 		
+		for(int x=0; x<ninePointHistogram.length; x++)
+		{
+			for(int y=0; y<ninePointHistogram[x].length; y++)
+			{
+				for(int z=0; z<ninePointHistogram[x][y].length; z++)
+				{
+					System.out.println(ninePointHistogram[x][y][z]);
+				}
+			}
+		}
+		
+		//createFeatureVector(ninePointHistogram);
+		
 		Imgproc.resize(tmp, tmp, new Size(640, 480));
 		Image i=new Image();
 		i.displayImage(tmp);
 	}
 	
 	public double[][][] calculate9PointHistogram(double[][] magnitude, double[][] theta, int binNum, int stepSize)
-	{
+	{ //TODO fix values since they dont match up with python code
 		double[][][] ninePointHistogram=new double[16][8][9];
 		
 		for(int i=0; i<128; i+=8)
@@ -143,6 +156,47 @@ public class FeatureExtraction
 		}
 		
 		return ninePointHistogram;
+	}
+	
+	public void createFeatureVector(double[][][] ninePointHistogram)
+	{
+		double[][][] featureVector=new double[15][7][36];
+		double epsilon=0.00001;
+		
+		for(int i=0; i<ninePointHistogram.length-1; i++)
+		{
+			double[][] temp=new double[7][36];
+			
+			for(int j=0; j<ninePointHistogram[0].length-1; j++)
+			{
+				double[][][] values=new double[2][2][9];
+				for(int x=j; x<j+2; x++)
+				{
+					for(int y=i; y<i+2; y++)
+					{
+						values[x-j][y-i]=ninePointHistogram[y][x];
+						System.out.println(values[0][0][0]);
+					}
+				}
+				/*final_vector = []
+				for(double k:values[0][0])
+				for k in values
+				{
+					for l in k:
+					{
+						for m in l:
+						{
+							final_vector.append(m)
+						}
+					}
+				}
+				
+				k = round(math.sqrt(sum([pow(x, 2) for x in final_vector])), 9)
+				final_vector = [round(x/(k + epsilon), 9) for x in final_vector]
+				temp.append(final_vector)*/
+			}
+		//feature_vectors.append(temp)
+		}
 	}
 	
 	public int calculateJ(double angle, int stepSize)
